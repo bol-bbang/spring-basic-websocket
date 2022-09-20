@@ -4,8 +4,12 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.io.Serializable;
+
 @Getter
-public class Channel {
+public class Channel implements Serializable {
+    private static final long serialVersionUID = 6494678977089006639L;
+
     private final String channelId;
     private final String name;
 
