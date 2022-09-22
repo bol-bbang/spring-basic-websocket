@@ -3,6 +3,7 @@ package com.example.websocket.channel;
 import com.example.websocket.channel.dto.Channel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -18,12 +19,17 @@ public class ChannelService {
     @PostConstruct
     private void init() {
         /* test용 채널 */
-        Channel defaultChannel = Channel.create("green-house-abcd", "Green's House");
-        channelRepository.createChannel(defaultChannel);
+        channelRepository.findChannelById("green-house-abcd")
+                .orElseGet(
+                        () -> {
+                            Channel defaultChannel = Channel.create("green-house-abcd", "Green's House");
+                            return channelRepository.createChannel(defaultChannel);
+                        }
+                );
     }
 
     public List<Channel> getChannelList() {
-        return channelRepository.findAllChannelReverse();
+        return channelRepository.findAllChannel();
     }
 
     public Channel getChannel(String channelId) {
@@ -46,6 +52,16 @@ public class ChannelService {
                 return channelId;
             }
         }
+    }
+
+    public void enterChannel(String channelId) {
+        if (channelRepository.getTopic(channelId).isEmpty()) {
+            channelRepository.createTopic(channelId);
+        }
+    }
+
+    public ChannelTopic getTopic(String channelId) {
+        return channelRepository.getTopic(channelId).orElse(new ChannelTopic(channelId));
     }
 
 }
