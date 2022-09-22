@@ -9,3 +9,5 @@ spring:
   redis:
     host: localhost
     port: 6379
+  thymeleaf:
+    prefix: classpath:/templates

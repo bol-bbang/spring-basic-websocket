@@ -19,8 +19,13 @@ public class ChannelService {
     @PostConstruct
     private void init() {
         /* test용 채널 */
-        Channel defaultChannel = Channel.create("green-house-abcd", "Green's House");
-        channelRepository.createChannel(defaultChannel);
+        channelRepository.findChannelById("green-house-abcd")
+                .orElseGet(
+                        () -> {
+                            Channel defaultChannel = Channel.create("green-house-abcd", "Green's House");
+                            return channelRepository.createChannel(defaultChannel);
+                        }
+                );
     }
 
     public List<Channel> getChannelList() {

@@ -5,7 +5,6 @@ import com.example.websocket.chat.dto.ChatMessage;
 import com.example.websocket.redis.RedisPublisher;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Controller;
 
 @RequiredArgsConstructor
